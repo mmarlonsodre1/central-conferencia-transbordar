@@ -18,24 +18,40 @@ class MyApp extends StatelessWidget {
           primaryColor: primaryColor,
           fontFamily: 'Neue Machina'
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   var constraints = const BoxConstraints();
+  final headerKey = GlobalKey();
+  final bodyTextKey = GlobalKey();
+  final passportKey = GlobalKey();
+  final faqKey = GlobalKey();
+  double scrollPosition = 0.0;
+  late ScrollController _controller;
+
+  _scrollListener() {
+    setState(() {
+      scrollPosition = _controller.position.pixels;
+    });
+  }
+
+  @override
+  void initState() {
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: _body(),
                 )
                     : _body(),
+                _menu()
               ],
             );
           }
@@ -67,33 +84,79 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _body() {
     return SingleChildScrollView(
       physics: const ClampingScrollPhysics(),
+      controller: _controller,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _header(),
-          _bodyText(),
+          _scrollWidget(headerKey, _header()),
+          _scrollWidget(bodyTextKey, _bodyText()),
           _date(),
-          _passport(),
-          _faq(),
+          _scrollWidget(passportKey, _passport()),
+          _scrollWidget(faqKey, _faq()),
           _footer(),
         ],
       ),
     );
   }
 
+  Widget _scrollWidget(key, widget) {
+    return Container(
+      key: key,
+      child: widget,
+    );
+  }
+
   Widget _header() {
-    return Stack(
-      children: [
-        Image.network(
-          'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/header.png',
-          semanticLabel: 'Banner conferência transbordar',
-          height: constraints.maxWidth / 1.408,
-          width: constraints.maxWidth,
-          fit: BoxFit.fitWidth,
-          loadingBuilder: _loadingBuilder(),
+    return Image.network(
+      'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/header.png',
+      semanticLabel: 'Banner conferência transbordar',
+      height: constraints.maxWidth / 1.408,
+      width: constraints.maxWidth,
+      fit: BoxFit.fitWidth,
+      loadingBuilder: _loadingBuilder(),
+    );
+  }
+
+  Widget _menu() {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      color: scrollPosition > 50 ? primaryColor : Colors.transparent,
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: 15.percent,
+          vertical: _getSize(
+              [2.percent, 3.percent, 3.percent]
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _menuButton('HOME', headerKey.currentContext ?? context),
+            _menuButton('SOBRE', bodyTextKey.currentContext ?? context),
+            _menuButton('PASSAPORTE', passportKey.currentContext ?? context),
+            _menuButton('DÚVIDAS', faqKey.currentContext ?? context),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _menuButton(title, widgetContext) {
+    return TextButton(
+        onPressed: () => Scrollable.ensureVisible(
+            widgetContext,
+            duration: const Duration(milliseconds: 500)
+        ),
+        child: Text(
+          title,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: _getSize(
+              [8, 1.8.percent, 1.8.percent]
+            ),
+          ),
         )
-      ],
     );
   }
 
