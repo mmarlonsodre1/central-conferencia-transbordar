@@ -12,9 +12,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Central do Avivamento',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
         primaryColor: primaryColor,
         fontFamily: 'Neue Machina'
       ),
@@ -50,23 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: double.maxFinite,
                 fit: BoxFit.fill,
               ),
-              InteractiveViewer(
-                child: SingleChildScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _header(),
-                      _bodyText(),
-                      _date(),
-                      _passport(),
-                      _faq(),
-                      _footer(),
-                    ],
-                  ),
-                ),
-              ),
+              constraints.maxWidth <= 420
+                  ? InteractiveViewer(
+                      maxScale: 1.5,
+                      child: _body(),
+                    )
+                  : _body(),
             ],
           );
         }
@@ -74,11 +63,29 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget _body() {
+    return SingleChildScrollView(
+    physics: const ClampingScrollPhysics(),
+    child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+    _header(),
+    _bodyText(),
+    _date(),
+    _passport(),
+    _faq(),
+    _footer(),
+    ],
+    ),
+    );
+  }
   Widget _header() {
     return Stack(
       children: [
-        Image.asset(
-          'assets/header.webp',
+        Image.network(
+          'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/header.png',
+          semanticLabel: 'Banner conferência transbordar',
           width: double.maxFinite,
           fit: BoxFit.fitWidth,
         )
@@ -111,8 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _date() {
     return Stack(
       children: [
-        Image.asset(
-          'assets/date.webp',
+        Image.network(
+          'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/date.png',
           fit: BoxFit.fitWidth,
         ),
         Positioned(
@@ -134,7 +141,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   vertical: _getSize(
                       [8, 10, 12.0]
                   ),
-                  horizontal: 24.0
+                  horizontal: 20.0
               ),
               child: Center(
                 child: Column(
@@ -157,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                           color: Colors.white,
                           fontSize: _getSize(
-                              [9, 2.3.percent, 2.1.percent]
+                              [8, 2.3.percent, 2.1.percent]
                           ),
                           fontWeight: FontWeight.w300,
                           wordSpacing: 1.percent
@@ -236,8 +243,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       child: Row(
         children: [
-          Image.asset(
-            'assets/passport.webp',
+          Image.network(
+            'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/passport.png',
             width: _getSize(
                 [53.percent, 53.percent, 55.percent]
             ),
@@ -406,12 +413,12 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-          Image.asset(
-            'assets/footer.webp',
+          Image.network(
+            'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/footer.png',
             width: double.maxFinite,
           ),
-          Image.asset(
-            'assets/footer_persons.webp',
+          Image.network(
+            'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/footer_persons.png',
             fit: BoxFit.fitWidth,
           )
         ],
