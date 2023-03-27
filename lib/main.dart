@@ -14,9 +14,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Central do Avivamento',
       theme: ThemeData(
-        primarySwatch: Colors.green,
-        primaryColor: primaryColor,
-        fontFamily: 'Neue Machina'
+          primarySwatch: Colors.green,
+          primaryColor: primaryColor,
+          fontFamily: 'Neue Machina'
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       debugShowCheckedModeBanner: false,
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -40,57 +41,76 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
-        builder: (context, BoxConstraints constraints) {
-          this.constraints = constraints;
-          return Stack(
-            children: [
-              Image.asset(
-                'assets/bg.webp',
-                width: double.maxFinite,
-                height: double.maxFinite,
-                fit: BoxFit.fill,
-              ),
-              constraints.maxWidth <= 420
-                  ? InteractiveViewer(
-                      maxScale: 1.5,
-                      child: _body(),
-                    )
-                  : _body(),
-            ],
-          );
-        }
-      ),// This trailing comma makes auto-formatting nicer for build methods.
+          builder: (context, BoxConstraints constraints) {
+            this.constraints = constraints;
+            return Stack(
+              children: [
+                Image.asset(
+                  'assets/bg.webp',
+                  width: double.maxFinite,
+                  height: double.maxFinite,
+                  fit: BoxFit.fill,
+                ),
+                constraints.maxWidth <= 420
+                    ? InteractiveViewer(
+                  maxScale: 1.5,
+                  child: _body(),
+                )
+                    : _body(),
+              ],
+            );
+          }
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
   Widget _body() {
     return SingleChildScrollView(
-    physics: const ClampingScrollPhysics(),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-    _header(),
-    _bodyText(),
-    _date(),
-    _passport(),
-    _faq(),
-    _footer(),
-    ],
-    ),
+      physics: const ClampingScrollPhysics(),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _header(),
+          _bodyText(),
+          _date(),
+          _passport(),
+          _faq(),
+          _footer(),
+        ],
+      ),
     );
   }
+
   Widget _header() {
     return Stack(
       children: [
         Image.network(
           'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/header.png',
           semanticLabel: 'Banner conferência transbordar',
-          width: double.maxFinite,
+          height: constraints.maxWidth / 1.408,
+          width: constraints.maxWidth,
           fit: BoxFit.fitWidth,
+          loadingBuilder: _loadingBuilder(),
         )
       ],
     );
+  }
+
+  ImageLoadingBuilder _loadingBuilder() {
+    return (BuildContext context, Widget child,
+        ImageChunkEvent? loadingProgress) {
+      if (loadingProgress == null) return child;
+      return Center(
+        child: CircularProgressIndicator(
+          color: Colors.white,
+          value: loadingProgress.expectedTotalBytes != null
+              ? loadingProgress.cumulativeBytesLoaded /
+              loadingProgress.expectedTotalBytes!
+              : null,
+        ),
+      );
+    };
   }
 
   Widget _bodyText() {
@@ -120,7 +140,9 @@ class _MyHomePageState extends State<MyHomePage> {
       children: [
         Image.network(
           'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/date.png',
-          fit: BoxFit.fitWidth,
+          height: constraints.maxWidth / 3.894,
+          width: constraints.maxWidth,
+          loadingBuilder: _loadingBuilder(),
         ),
         Positioned(
           top: 3.percent,
@@ -131,10 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
             decoration: BoxDecoration(
               color: primaryColor.withOpacity(0.65),
               borderRadius: BorderRadius.circular(2.5.percent),
-                border: Border.all(
+              border: Border.all(
                   color: Colors.white,
                   width: 0.1.percent
-                ),
+              ),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
@@ -150,10 +172,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     Text(
                       '21 E 22 DE ABRIL',
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: _getSize(
-                            [13, 2.3.percent, 2.1.percent]
-                        )
+                          color: Colors.white,
+                          fontSize: _getSize(
+                              [13, 2.3.percent, 2.1.percent]
+                          )
                       ),
                     ),
                     SizedBox(
@@ -171,11 +193,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     SizedBox(
-                      height: 2.percent
+                        height: 2.percent
                     ),
                     _button(
                       'INSCREVA-SE',
-                      () {},
+                          () {},
                     )
                   ],
                 ),
@@ -190,11 +212,11 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _button(title, onPress) {
     return Container(
       decoration: BoxDecoration(
-      boxShadow: [
+        boxShadow: [
           BoxShadow(
-            color: Colors.white,
-            offset: const Offset(0, 1),
-            blurRadius: 2.percent
+              color: Colors.white,
+              offset: const Offset(0, 1),
+              blurRadius: 2.percent
           )
         ],
         borderRadius: BorderRadius.circular(2.percent),
@@ -236,10 +258,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _passport() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: 15.percent,
-        vertical: _getSize(
-            [8.percent, 6.percent, 4.percent]
-        )
+          horizontal: 15.percent,
+          vertical: _getSize(
+              [8.percent, 6.percent, 4.percent]
+          )
       ),
       child: Row(
         children: [
@@ -250,8 +272,8 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           _button(
-            'COMPRAR',
-            () {}
+              'COMPRAR',
+                  () {}
           )
         ],
       ),
@@ -261,7 +283,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _faq() {
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: 7.5.percent
+          horizontal: 7.5.percent
       ),
       child: Container(
         decoration: BoxDecoration(
@@ -280,8 +302,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                 'PERGUNTAS FREQUENTES',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 3.percent
+                    color: Colors.white,
+                    fontSize: 3.percent
                 ),
               ),
               SizedBox(
@@ -321,105 +343,111 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _item(title, description) {
     var visibility = false;
     return StatefulBuilder(
-      builder: (context, setState) {
-        return GestureDetector(
-          onTap: () => setState(() {
-            visibility = !visibility;
-          }),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: _getSize(
-                            [7, 14, 2.percent]
+        builder: (context, setState) {
+          return GestureDetector(
+            onTap: () =>
+                setState(() {
+                  visibility = !visibility;
+                }),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: _getSize(
+                                [7, 14, 2.percent]
+                            ),
+                            color: Colors.white
                         ),
-                        color: Colors.white
                       ),
                     ),
-                  ),
-                  SizedBox(width: 2.percent,),
-                  Image.asset(
-                    height: _getSize(
-                        [1.percent, 1.percent, 0.5.percent]
-                    ),
-                    width: _getSize(
-                        [1.2.percent, 1.2.percent, 0.6.percent]
-                    ),
-                    visibility ? 'assets/minus.webp' : 'assets/arrow.webp'
-                  )
-                ],
-              ),
-              AnimatedOpacity(
-                opacity: visibility ? 1.0 : 0.0,
-                duration: const Duration(milliseconds: 300),
-                child: Visibility(
-                    visible: visibility,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 1.percent,),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset(
-                                width: _getSize(
-                                    [1.percent, 1.percent, 0.6.percent]
-                                ),
-                                'assets/minus.webp'
-                            ),
-                            SizedBox(width: 0.5.percent,),
-                            Text(
-                              description,
-                              style: TextStyle(
-                                  fontSize: _getSize(
-                                      [6, 12, 1.percent]
-                                  ),
-                                  color: Colors.white
-                              ),
-                            ),
-                          ],
+                    SizedBox(width: 2.percent,),
+                    Image.asset(
+                        height: _getSize(
+                            [1.percent, 1.percent, 0.5.percent]
                         ),
-                      ],
+                        width: _getSize(
+                            [1.2.percent, 1.2.percent, 0.6.percent]
+                        ),
+                        visibility ? 'assets/minus.webp' : 'assets/arrow.webp'
                     )
+                  ],
                 ),
-              ),
-              SizedBox(height: 1.percent,),
-              Container(
-                color: Colors.white,
-                height: _getSize(
-                    [0.1.percent, 0.1.percent, 0.05.percent]
+                AnimatedOpacity(
+                  opacity: visibility ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 300),
+                  child: Visibility(
+                      visible: visibility,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 1.percent,),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                  width: _getSize(
+                                      [1.percent, 1.percent, 0.6.percent]
+                                  ),
+                                  'assets/minus.webp'
+                              ),
+                              SizedBox(width: 0.5.percent,),
+                              Text(
+                                description,
+                                style: TextStyle(
+                                    fontSize: _getSize(
+                                        [6, 12, 1.percent]
+                                    ),
+                                    color: Colors.white
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )
+                  ),
                 ),
-                width: double.maxFinite,
-              ),
-              SizedBox(height: 1.5.percent,),
-            ],
-          ),
-        );
-      }
+                SizedBox(height: 1.percent,),
+                Container(
+                  color: Colors.white,
+                  height: _getSize(
+                      [0.1.percent, 0.1.percent, 0.05.percent]
+                  ),
+                  width: double.maxFinite,
+                ),
+                SizedBox(height: 1.5.percent,),
+              ],
+            ),
+          );
+        }
     );
   }
 
   Widget _footer() {
     return Padding(
       padding: EdgeInsets.only(
-        top: 12.percent
+          top: 12.percent
       ),
       child: Stack(
         alignment: Alignment.bottomCenter,
         children: [
           Image.network(
             'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/footer.png',
-            width: double.maxFinite,
+            height: constraints.maxWidth / 9.056,
+            width: constraints.maxWidth,
+            loadingBuilder: _loadingBuilder(),
           ),
           Image.network(
             'https://raw.githubusercontent.com/mmarlonsodre1/central-conferencia-transbordar/master/assets_remote/footer_persons.png',
             fit: BoxFit.fitWidth,
+            height: constraints.maxWidth / 6.5979,
+            width: constraints.maxWidth,
+            loadingBuilder: _loadingBuilder(),
           )
         ],
       ),
