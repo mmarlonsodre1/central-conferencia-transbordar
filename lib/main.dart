@@ -15,6 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        primaryColor: primaryColor,
         fontFamily: 'Neue Machina'
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
@@ -33,11 +34,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
+  var constraints = const BoxConstraints();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, BoxConstraints constraints) {
+          this.constraints = constraints;
           return Stack(
             children: [
               Image.asset(
@@ -46,18 +50,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 height: double.maxFinite,
                 fit: BoxFit.fill,
               ),
-              SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _header(),
-                    _bodyText(),
-                    _date(),
-                    _passport(),
-                    _faq(),
-                    _footer(),
-                  ],
+              InteractiveViewer(
+                child: SingleChildScrollView(
+                  physics: const ClampingScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _header(),
+                      _bodyText(),
+                      _date(),
+                      _passport(),
+                      _faq(),
+                      _footer(),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -83,14 +90,18 @@ class _MyHomePageState extends State<MyHomePage> {
     return Padding(
       padding: EdgeInsets.only(
         left: 15.percent, right: 15.percent,
-        bottom: 4.percent
+        bottom: _getSize(
+            [8.percent, 6.percent, 4.percent]
+        ),
       ),
       child: Text(
         title,
         textAlign: TextAlign.justify,
         style: TextStyle(
           color: Colors.white,
-          fontSize: 2.1.percent,
+          fontSize: _getSize(
+              [12, 2.3.percent, 2.1.percent]
+          ),
           fontWeight: FontWeight.w400,
         ),
       ),
@@ -119,8 +130,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 12.0,
+              padding: EdgeInsets.symmetric(
+                  vertical: _getSize(
+                      [8, 10, 12.0]
+                  ),
                   horizontal: 24.0
               ),
               child: Center(
@@ -131,23 +144,27 @@ class _MyHomePageState extends State<MyHomePage> {
                       '21 E 22 DE ABRIL',
                       style: TextStyle(
                         color: Colors.white,
-                        fontSize: 2.5.percent
+                        fontSize: _getSize(
+                            [13, 2.3.percent, 2.1.percent]
+                        )
                       ),
                     ),
                     SizedBox(
-                      height: 2.5.percent,
+                      height: 2.percent,
                     ),
                     Text(
                       '"EM VOCÊ E ATRAVÉS DE VOCÊ."',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 2.1.percent,
+                          fontSize: _getSize(
+                              [9, 2.3.percent, 2.1.percent]
+                          ),
                           fontWeight: FontWeight.w300,
                           wordSpacing: 1.percent
                       ),
                     ),
                     SizedBox(
-                      height: 2.5.percent,
+                      height: 2.percent
                     ),
                     _button(
                       'INSCREVA-SE',
@@ -183,8 +200,12 @@ class _MyHomePageState extends State<MyHomePage> {
           onTap: () {},
           borderRadius: BorderRadius.circular(2.percent),
           child: Container(
-            height: 3.percent,
-            width: 15.percent,
+            height: _getSize(
+                [4.percent, 3.5.percent, 3.percent]
+            ),
+            width: _getSize(
+                [17.percent, 16.percent, 15.percent]
+            ),
             alignment: Alignment.center,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2.percent),
@@ -194,7 +215,9 @@ class _MyHomePageState extends State<MyHomePage> {
               title,
               style: TextStyle(
                 color: primaryColor,
-                fontSize: 0.8.percent
+                fontSize: _getSize(
+                    [7, 11, 0.8.percent]
+                ),
               ),
             ),
           ),
@@ -207,13 +230,17 @@ class _MyHomePageState extends State<MyHomePage> {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 15.percent,
-        vertical: 4.percent
+        vertical: _getSize(
+            [8.percent, 6.percent, 4.percent]
+        )
       ),
       child: Row(
         children: [
           Image.asset(
             'assets/passport.webp',
-            width: 55.percent,
+            width: _getSize(
+                [53.percent, 53.percent, 55.percent]
+            ),
           ),
           _button(
             'COMPRAR',
@@ -255,7 +282,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Container(
                 color: Colors.white,
-                height: 0.05.percent,
+                height: _getSize(
+                    [0.1.percent, 0.1.percent, 0.05.percent]
+                ),
                 width: 27.percent,
               ),
               SizedBox(
@@ -300,15 +329,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: Text(
                       title,
                       style: TextStyle(
-                        fontSize: 1.percent,
+                        fontSize: _getSize(
+                            [7, 14, 2.percent]
+                        ),
                         color: Colors.white
                       ),
                     ),
                   ),
                   SizedBox(width: 2.percent,),
                   Image.asset(
-                    height: 0.5.percent,
-                    width: 0.6.percent,
+                    height: _getSize(
+                        [1.percent, 1.percent, 0.5.percent]
+                    ),
+                    width: _getSize(
+                        [1.2.percent, 1.2.percent, 0.6.percent]
+                    ),
                     visibility ? 'assets/minus.webp' : 'assets/arrow.webp'
                   )
                 ],
@@ -326,15 +361,18 @@ class _MyHomePageState extends State<MyHomePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
-                                height: 0.5.percent,
-                                width: 0.6.percent,
+                                width: _getSize(
+                                    [1.percent, 1.percent, 0.6.percent]
+                                ),
                                 'assets/minus.webp'
                             ),
-                            SizedBox(width: 0.2.percent,),
+                            SizedBox(width: 0.5.percent,),
                             Text(
                               description,
                               style: TextStyle(
-                                  fontSize: 1.percent,
+                                  fontSize: _getSize(
+                                      [6, 12, 1.percent]
+                                  ),
                                   color: Colors.white
                               ),
                             ),
@@ -347,7 +385,9 @@ class _MyHomePageState extends State<MyHomePage> {
               SizedBox(height: 1.percent,),
               Container(
                 color: Colors.white,
-                height: 0.05.percent,
+                height: _getSize(
+                    [0.1.percent, 0.1.percent, 0.05.percent]
+                ),
                 width: double.maxFinite,
               ),
               SizedBox(height: 1.5.percent,),
@@ -377,5 +417,15 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
     );
+  }
+
+  double _getSize(List<double> list) {
+    if (constraints.maxWidth <= 420) {
+      return list[0];
+    } else if (constraints.maxWidth <= 1280) {
+      return list[1];
+    } else {
+      return list[2];
+    }
   }
 }
