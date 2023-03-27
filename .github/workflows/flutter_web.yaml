@@ -32,7 +32,7 @@ jobs:
           git config --global user.email mmarlonsodre@gmail.com
           git config --global user.name mmarlonsodre1
           git status
-          git remote add origin https://${{secrets.token}}@github.com/mmarlonsodre1/central-conferencia-transbordar.github.io.git
+          git remote add origin https://${{secrets.token}}@github.com/mmarlonsodre1/mmarlonsodre1.centralconferenciatransbordar.github.io.git
           git checkout -b gh-pages
           git add --all
           git commit -m "update"
