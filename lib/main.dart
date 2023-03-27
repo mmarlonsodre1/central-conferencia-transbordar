@@ -40,13 +40,11 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context, BoxConstraints constraints) {
           return Stack(
             children: [
-              Expanded(
-                child: Image.asset(
-                  'assets/bg.webp',
-                  width: double.maxFinite,
-                  height: double.maxFinite,
-                  fit: BoxFit.fill,
-                ),
+              Image.asset(
+                'assets/bg.webp',
+                width: double.maxFinite,
+                height: double.maxFinite,
+                fit: BoxFit.fill,
               ),
               SingleChildScrollView(
                 child: Column(
