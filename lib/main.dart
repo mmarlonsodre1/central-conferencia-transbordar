@@ -388,8 +388,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   itemCount: faQuestions.keys.length,
                   itemBuilder: (context, index) {
                     return _item(
-                        faQuestions.keys.elementAt(index),
-                        faQuestions.values.elementAt(index)
+                      faQuestions.keys.elementAt(index),
+                      faQuestions.values.elementAt(index),
+                      index
                     );
                   }
               ),
@@ -403,14 +404,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _item(title, description) {
-    var visibility = false;
+  var visibilityList = List.generate(10, (index) => false);
+
+  Widget _item(title, description, index) {
     return StatefulBuilder(
         builder: (context, setState) {
           return GestureDetector(
             onTap: () =>
                 setState(() {
-                  visibility = !visibility;
+                  visibilityList[index] = !visibilityList[index];
                 }),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,15 +439,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         width: _getSize(
                             [1.2.percent, 1.2.percent, 0.6.percent]
                         ),
-                        visibility ? 'assets/minus.webp' : 'assets/arrow.webp'
+                        visibilityList[index] ? 'assets/minus.webp' : 'assets/arrow.webp'
                     )
                   ],
                 ),
                 AnimatedOpacity(
-                  opacity: visibility ? 1.0 : 0.0,
+                  opacity: visibilityList[index] ? 1.0 : 0.0,
                   duration: const Duration(milliseconds: 300),
                   child: Visibility(
-                      visible: visibility,
+                      visible: visibilityList[index],
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -460,13 +462,15 @@ class _MyHomePageState extends State<MyHomePage> {
                                   'assets/minus.webp'
                               ),
                               SizedBox(width: 0.5.percent,),
-                              Text(
-                                description,
-                                style: TextStyle(
-                                    fontSize: _getSize(
-                                        [6, 12, 1.percent]
-                                    ),
-                                    color: Colors.white
+                              Expanded(
+                                child: Text(
+                                  description,
+                                  style: TextStyle(
+                                      fontSize: _getSize(
+                                          [6, 12, 1.percent]
+                                      ),
+                                      color: Colors.white
+                                  ),
                                 ),
                               ),
                             ],
