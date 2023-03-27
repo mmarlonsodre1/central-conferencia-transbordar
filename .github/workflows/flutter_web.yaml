@@ -34,7 +34,7 @@ jobs:
           git config --global user.name mmarlonsodre1
           git status
           git remote add origin https://${{secrets.token}}@github.com/mmarlonsodre1/mmarlonsodre1.github.io.git
-          git checkout -b gh-pages
+          git checkout -b main
           git add --all
           git commit -m "update"
           git push origin gh-pages -f
