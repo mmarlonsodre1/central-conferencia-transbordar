@@ -1,6 +1,7 @@
 import 'package:central_conf_transbordar/strings.dart';
 import 'package:central_conf_transbordar/ui_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(const MyApp());
@@ -51,6 +52,16 @@ class _MyHomePageState extends State<MyHomePage> {
     _controller = ScrollController();
     _controller.addListener(_scrollListener);
     super.initState();
+  }
+
+  void _subscription() {
+    launchUrl(
+        Uri.parse(
+            "https://centraldoavivamento.com.br/eventos/381204/conferencia-trans"
+                "bordar?fbclid=PAAaZkjRiyoFy25xhtNCFOYNEWVXnhZN0A0SYhpSuXcSD_"
+                "lq4imnS8kzNc1jk"
+        )
+    );
   }
 
   @override
@@ -259,8 +270,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 2.percent
                     ),
                     _button(
-                      'INSCREVA-SE',
-                          () {},
+                      'INSCREVA-SE'
                     )
                   ],
                 ),
@@ -272,7 +282,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _button(title, onPress) {
+  Widget _button(title) {
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -289,7 +299,9 @@ class _MyHomePageState extends State<MyHomePage> {
         borderRadius: BorderRadius.circular(2.percent),
         color: Colors.white,
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            _subscription();
+          },
           borderRadius: BorderRadius.circular(2.percent),
           child: Container(
             height: _getSize(
@@ -335,8 +347,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           _button(
-              'COMPRAR',
-                  () {}
+              'COMPRAR'
           )
         ],
       ),
